@@ -1,0 +1,84 @@
+#pragma once
+#include <string>
+#include <iostream>
+#include <cstdlib>
+#include <string>
+
+#define W 64
+#define H 32
+
+class Chip
+{
+public:
+    bool m_end = false;
+
+private:
+
+    union uMemory
+    {
+	   uint8_t m_memory[4096]{0x12, 0x00};
+	   struct 
+	   {
+		  uint8_t m_v[16];
+		  uint8_t m_delay_timer;
+		  uint8_t m_sound_timer;
+		  uint16_t m_sp;
+		  uint8_t m_key[16];
+		  uint8_t m_waiting_key;
+		  uint8_t m_disp_mem[W * H / 8];
+		  uint8_t m_font[80];
+		  uint16_t m_pc;
+		  uint16_t m_stack[16];
+		  uint16_t m_i;
+	   };
+    };
+
+    uMemory memory;
+   
+    uint8_t m_fontset[80] =
+    {
+	  0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+	  0x20, 0x60, 0x20, 0x20, 0x70, // 1
+	  0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+	  0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+	  0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+	  0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+	  0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+	  0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+	  0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+	  0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+	  0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+	  0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+	  0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+	  0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+	  0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+	  0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+    };
+
+
+    char m_Screen[W * H] = {0};
+    bool m_DrawFlag = true;
+
+    bool m_WaitingKeyPress = false;
+    int m_CurrentKeyPress = -1;
+
+public:
+    Chip();
+    ~Chip() {}
+
+    void init();
+
+    void loadGame(const std::string& name, unsigned int pos = 0x200);
+
+    void emulateCycle();
+
+    char* getScreenChars();
+    void keyDown(uint8_t key);
+    void keyUp(uint8_t key);
+
+    void display();
+
+    void updateTimer(int count);
+
+};
+
