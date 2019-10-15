@@ -3,3 +3,5 @@
 Project1/Debug
 .vs
 *.pdb
+*.obj
+*/Debug
