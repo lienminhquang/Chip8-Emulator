@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include <string>
+#include <sstream>
 
 Engine::Engine() :
     m_Window(nullptr),
@@ -18,6 +19,12 @@ bool Engine::init()
 {
     bool success = true;
 
+    if (TTF_Init() < 0)
+    {
+	   std::cout << "Error: Could not initialize TTF, " << TTF_GetError() << "\n";
+	   success = false;
+    }
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
 	   printf("Could not initialize SDL, SDL_Error: %s/n", SDL_GetError());
@@ -25,7 +32,7 @@ bool Engine::init()
     }
     else
     {
-	   m_Window = SDL_CreateWindow("Chip8-Emulator", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH * TILE_SIZE, SCREEN_HEIGHT * TILE_SIZE, 0);
+	   m_Window = SDL_CreateWindow("Chip8-Emulator", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH * TILE_SIZE, SCREEN_HEIGHT * TILE_SIZE + 200, 0);
 	   if (m_Window == nullptr)
 	   {
 		  printf("Unable to create window ! SDL_Error: %s\n", SDL_GetError());
@@ -71,7 +78,10 @@ bool Engine::init()
 	   }
     }
 
-   
+    m_Font = TTF_OpenFont("res/Roboto-Black.ttf", 12);
+    m_Text.setFont(m_Font);
+    m_Text.setRenderer(m_Renderer);
+    m_Text.loadText("Chip 8 emulator. Created by lmq.");
 
     m_Chip.init();
     m_Chip.loadGame(m_Path);
@@ -97,8 +107,11 @@ void Engine::emulate()
 	   fps_time += timer.getElep() / 1000.f;
 	   if (fps_time >= 1.f)
 	   {
-		  //system("cls");
-		  //printf("FPS: %d", fps);
+		  std::stringstream ss;
+		  ss << "FPS: " << fps;
+
+		  m_Text.loadText(ss.str());
+
 		  fps = 0;
 		  fps_time -= 1.f;
 	   }
@@ -133,6 +146,9 @@ void Engine::emulate()
 
 void Engine::quit()
 {
+    
+    TTF_CloseFont(m_Font);
+
     if (m_Texture != nullptr)
 	   SDL_DestroyTexture(m_Texture);
     m_Texture = nullptr;
@@ -147,6 +163,7 @@ void Engine::quit()
 
     IMG_Quit();
     SDL_Quit();
+    TTF_Quit();
 }
 
 void Engine::update(float dt)
@@ -167,6 +184,7 @@ void Engine::processInput()
 	   case SDL_KEYDOWN:
 	   {
 		  int key = e.key.keysym.sym;
+		  //std::cout << "Key pressed: " << key << "\n";
 		  for (int i = 0; i < 16; i++)
 		  {
 			 if (key == m_KeyMap[i][0])
@@ -177,6 +195,8 @@ void Engine::processInput()
 	   case SDL_KEYUP:
 	   {
 		  int key = e.key.keysym.sym;
+		  //std::cout << "Key released: " << key << "\n";
+
 		  for (int i = 0; i < 16; i++)
 		  {
 			 if (key == m_KeyMap[i][0])
@@ -212,6 +232,12 @@ void Engine::display()
 	   }
     }
 
+    m_Text.render(0, SCREEN_HEIGHT * TILE_SIZE + 100, m_Text.getWidth(), m_Text.getHeight());
+
 
     SDL_RenderPresent(m_Renderer);
+}
+
+void Engine::displayDebug()
+{
 }

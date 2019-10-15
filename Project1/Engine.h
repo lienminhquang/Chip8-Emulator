@@ -5,10 +5,12 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <cstdio>
 #include <string>
 #include "Chip.h"
 #include "Timer.h"
+#include "Sprite.h"
 
 #define SCREEN_WIDTH 64
 #define SCREEN_HEIGHT 32
@@ -29,6 +31,7 @@ private:
     void update(float dt);
     void processInput();
     void display();
+    void displayDebug();
 
 
 private:
@@ -37,6 +40,9 @@ private:
     SDL_Window* m_Window;
     SDL_Renderer* m_Renderer;
     SDL_Texture* m_Texture;
+    TTF_Font* m_Font;
+    Sprite m_Text;
+    
 
     bool m_Quit = false;
     std::string m_Path;

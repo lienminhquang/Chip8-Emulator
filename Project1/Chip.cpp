@@ -379,7 +379,7 @@ void Chip::emulateCycle()
 	   std::cout << "RND V" << std::hex << x << ", " << std::hex << nnn << "\n";
 #endif // PRINT_INSTRCTION
 
-	   srand(123);
+	   //srand(123);
 	   int rd = rand() % 256;
 	   memory.m_v[x] = rd & kk;
 
@@ -442,7 +442,7 @@ void Chip::emulateCycle()
 		  std::cout << "SKP V" << std::hex << x << "\n";
 #endif // PRINT_INSTRCTION
 
-		  if (memory.m_key[memory.m_v[x]] == 1)
+		  if (memory.m_key[memory.m_v[x]] != 0)
 		  {
 			 memory.m_pc += 4;
 		  }
@@ -455,7 +455,7 @@ void Chip::emulateCycle()
 		  std::cout << "SKNP V" << std::hex << x << "\n";
 #endif // PRINT_INSTRCTION
 
-		  if (memory.m_key[memory.m_v[x]] == 0)
+		  if (memory.m_key[memory.m_v[x] & 0xf] == 0)
 		  {
 			 memory.m_pc += 4;
 		  }
@@ -498,15 +498,18 @@ void Chip::emulateCycle()
 
 		  if (!m_WaitingKeyPress)
 		  {
+			 std::cout << "Begin waiting for key press\n";
 			 m_WaitingKeyPress = true;
 			 m_CurrentKeyPress = -1;
 		  }
 		  else if (m_CurrentKeyPress >= 0 && m_CurrentKeyPress <= 0xf)
 		  {
+			 std::cout << "Key press! End wait for key. \n";
 			 memory.m_v[x] = m_CurrentKeyPress; //
 
 			 memory.m_pc += 2;
 		  }
+		  std::cout << "Wait for key press\n";
 	   }
 	   break;
 	   case 0x0015: // Fx15: set delay timer to value of Vx
@@ -556,8 +559,8 @@ void Chip::emulateCycle()
 #endif // PRINT_INSTRCTION
 
 		  memory.m_memory[memory.m_i + 0] = (memory.m_v[x] / 100) % 10;
-		  memory.m_memory[memory.m_i + 1] = (memory.m_v[x] / 10 ) % 10;
-		  memory.m_memory[memory.m_i + 2] = (memory.m_v[x] / 1  ) % 10;
+		  memory.m_memory[memory.m_i + 1] = (memory.m_v[x] / 10) % 10;
+		  memory.m_memory[memory.m_i + 2] = (memory.m_v[x] / 1) % 10;
 
 		  memory.m_pc += 2;
 	   }
@@ -598,7 +601,7 @@ void Chip::emulateCycle()
 		  return;
 	   }
 	   break;
-	   }
+    }
     }
     break;
 
@@ -609,7 +612,7 @@ void Chip::emulateCycle()
 	   return;
     }
     break;
-    }
+}
 
 
 
