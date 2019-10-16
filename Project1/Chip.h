@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <deque>
 
 #define W 64
 #define H 32
@@ -19,17 +20,17 @@ private:
 	   uint8_t m_memory[4096]{0x12, 0x00};
 	   struct 
 	   {
-		  uint8_t m_v[16];
-		  uint8_t m_delay_timer;
-		  uint8_t m_sound_timer;
-		  uint16_t m_sp;
-		  uint8_t m_key[16];
-		  uint8_t m_waiting_key;
-		  uint8_t m_disp_mem[W * H / 8];
-		  uint8_t m_font[80];
-		  uint16_t m_pc;
-		  uint16_t m_stack[16];
-		  uint16_t m_i;
+		  uint8_t m_v[16];				   //16*8
+		  uint8_t m_delay_timer;			   //1*8
+		  uint8_t m_sound_timer;			   //1*8
+		  uint16_t m_sp;				   //1*16
+		  uint8_t m_key[16];			   //16*8
+		  uint8_t m_waiting_key;			   //1*8
+		  uint8_t m_disp_mem[W * H / 8];	   //256*8
+		  uint8_t m_font[80];			   //80*8
+		  uint16_t m_pc;				   //1*16
+		  uint16_t m_stack[16];			   //16*16
+		  uint16_t m_i;				   //1*16
 	   };
     };
 
@@ -61,24 +62,29 @@ private:
 
     bool m_WaitingKeyPress = false;
     int m_CurrentKeyPress = -1;
+    
+    const int MAX_INS_IN_QUEUE = 10;
+    std::deque<std::string> m_CurrentInsStringQueue;
+
+private:
+    void pushInsStringToQueue(const std::string& str);
 
 public:
     Chip();
     ~Chip() {}
 
     void init();
-
     void loadGame(const std::string& name, unsigned int pos = 0x200);
-
     void emulateCycle();
-
     char* getScreenChars();
     void keyDown(uint8_t key);
     void keyUp(uint8_t key);
-
-    void display();
-
     void updateTimer(int count);
 
+    const std::deque<std::string>& getCurrentInstruction() { return m_CurrentInsStringQueue; }
+    const uMemory* getMemory() const { return &(memory); }
+    
+    bool needDraw() { return m_DrawFlag; }
+    void resetDrawFlag() { m_DrawFlag = false; }
 };
 
