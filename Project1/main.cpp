@@ -11,7 +11,6 @@
 
 int main(int argc, char* argv[])
 {
-
     std::cout << "Enter game: ";
     std::string path = "roms/hanoi.bin";
     std::cin >> path;

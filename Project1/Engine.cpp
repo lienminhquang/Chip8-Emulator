@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include <string>
 #include <sstream>
+#include <iostream>
 
 #define DEBUG_OFFSET 40
 
@@ -8,13 +9,15 @@ Engine::Engine() :
     m_Window(nullptr),
     m_Renderer(nullptr),
     m_Texture(nullptr),
-    m_Font(nullptr)
+    m_Font(nullptr),
+    m_CurrentScreenOfChip()
 {
+    //Helper::find_file("roms", m_ListFilesFound);
 }
 
 Engine::~Engine()
 {
-   
+ 
 
 }
 

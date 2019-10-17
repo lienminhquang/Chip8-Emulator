@@ -1,29 +1,37 @@
 #include "Sprite.h"
 
-Sprite::Sprite():
-    m_Texture(nullptr)
+Sprite::Sprite(MTexture* texture):
+    m_Texture(texture),
+    m_Rect()
 {
 }
 
 Sprite::~Sprite()
 {
-    SDL_DestroyTexture(m_Texture);
+   
 }
 
-void Sprite::loadText(const std::string& text)
+void Sprite::render()
 {
-    if (m_Texture != nullptr)
-	   SDL_DestroyTexture(m_Texture);
-
-    SDL_Surface* surface = TTF_RenderText_Solid(m_Font, text.c_str(), { 0, 0, 255, 255 });
-    m_Texture = SDL_CreateTextureFromSurface(m_Renderer, surface);
-    m_Width = surface->w;
-    m_Height = surface->h;
-    SDL_FreeSurface(surface);
+    m_Texture->render(nullptr, &m_Rect);
+    
+    this->renderChilds();
 }
 
-void Sprite::render(int x, int y, int w, int h)
+
+void Sprite::setPosition(int x, int y)
 {
-    SDL_Rect desRect = { x, y, w, h };
-    SDL_RenderCopy(m_Renderer, m_Texture, nullptr, &desRect);
+    m_Rect.x = x;
+    m_Rect.y = y;
+}
+
+void Sprite::setSize(int w, int h)
+{
+    m_Rect.w = w;
+    m_Rect.h = h;
+}
+
+SDL_Rect Sprite::getRect()
+{
+    return m_Rect;
 }

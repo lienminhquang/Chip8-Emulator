@@ -1,29 +1,28 @@
 #pragma once
 #include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
 #include <string>
+#include "Vec2.h"
+#include "MTexture.h"
+#include "Component.h"
 
-class Sprite
+
+
+
+class Sprite : public Component
 {
 public:
-    Sprite();
+    explicit Sprite(MTexture* texture);
     ~Sprite();
 
-    int getWidth() { return m_Width; }
-    int getHeight() { return m_Height; }
-    void setFont(TTF_Font* font) { m_Font = font; }
-    void setRenderer(SDL_Renderer* r) { m_Renderer = r; }
+    virtual void render() override;
 
-    void loadText(const std::string& text);
-    void render(int x, int y, int w, int h);
+    void setPosition(int x, int y);
+    void setSize(int w, int h);
+    SDL_Rect getRect();
 
 private:
-    SDL_Texture* m_Texture;
-    int m_Width;
-    int m_Height;
 
-    TTF_Font* m_Font;
-    SDL_Renderer* m_Renderer;
+    MTexture* m_Texture;
+    SDL_Rect m_Rect;
 };
 

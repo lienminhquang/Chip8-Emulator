@@ -12,6 +12,8 @@
 #include "Timer.h"
 #include "Sprite.h"
 #include "SDL_FontCache.h"
+#include "Helper.h"
+#include <list>
 
 #define SCREEN_WIDTH 64
 #define SCREEN_HEIGHT 32
@@ -71,5 +73,8 @@ private:
 	   {SDLK_a, 0x7},{SDLK_s, 0x8},{SDLK_d, 0x9},{SDLK_f, 0xe},
 	   {SDLK_z, 0xa},{SDLK_x, 0x0},{SDLK_c, 0xb},{SDLK_v, 0xf}
     };
+
+    std::list < std::string > m_ListFilesFound;
 };
+
 
