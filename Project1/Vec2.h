@@ -1,7 +1,7 @@
 #pragma once
 struct Vec2
 {
-    Vec2(float x_, float y_) :
+    Vec2(int x_, int y_) :
 	   x(x_),
 	   y(y_)
     {
@@ -10,7 +10,12 @@ struct Vec2
 
     Vec2():x(0),y(0) {}
 
-    float x;
-    float y;
+    const Vec2& operator +(const Vec2& other)
+    {
+	   return { this->x + other.x, this->y + other.y };
+    }
+
+    int x;
+    int y;
 };
 

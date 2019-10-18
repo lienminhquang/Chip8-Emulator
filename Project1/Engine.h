@@ -14,6 +14,8 @@
 #include "SDL_FontCache.h"
 #include "Helper.h"
 #include <list>
+#include "MTexture.h"
+#include "Sprite.h"
 
 #define SCREEN_WIDTH 64
 #define SCREEN_HEIGHT 32
@@ -54,8 +56,13 @@ private:
     SDL_Window* m_Window;
     SDL_Renderer* m_Renderer;
     SDL_Texture* m_Texture;
-
     FC_Font* m_Font;
+
+    std::unique_ptr<MTexture> m_TestTexture;
+    std::unique_ptr<MTexture> m_TestTexture2;
+    std::unique_ptr<Sprite> m_Sprite;
+
+  
     
 
     bool m_Quit = false;

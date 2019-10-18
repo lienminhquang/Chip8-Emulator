@@ -1,8 +1,17 @@
 #include "Sprite.h"
 
-Sprite::Sprite(MTexture* texture):
-    m_Texture(texture),
-    m_Rect()
+
+Sprite::Sprite(MTexture* texture) :
+    Component(),
+    m_Texture(texture)
+{
+    auto size = m_Texture->getSize();
+    this->setSize(size.x, size.y);
+}
+
+Sprite::Sprite():
+    Component(),
+    m_Texture(nullptr)
 {
 }
 
@@ -13,25 +22,11 @@ Sprite::~Sprite()
 
 void Sprite::render()
 {
-    m_Texture->render(nullptr, &m_Rect);
+    auto pos = this->getRectInWorldPosition();
+    m_Texture->render(nullptr, &(this->getRectInWorldPosition()));
     
     this->renderChilds();
 }
 
 
-void Sprite::setPosition(int x, int y)
-{
-    m_Rect.x = x;
-    m_Rect.y = y;
-}
 
-void Sprite::setSize(int w, int h)
-{
-    m_Rect.w = w;
-    m_Rect.h = h;
-}
-
-SDL_Rect Sprite::getRect()
-{
-    return m_Rect;
-}
