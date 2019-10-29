@@ -1,13 +1,15 @@
 # Chip-8 emulator
-A Chip-8 emulator in C++.
-Use SDL2 to simulate screen. 
-![Pong](imgs/pong.png "Pong")
+- A Chip-8 emulator in C++.
+- Use SDL2 to simulate screen. 
+
+## Examples
+![Pong](imgs/pong.PNG "Pong")
 *Pong*
 
-![UFO](imgs/ufo.png "UFO")
+![UFO](imgs/ufo.PNG "UFO")
 *UFO*
 
-![HaNoi](imgs/hanoi.png "HaNoi")
+![HaNoi](imgs/hanoi.PNG "HaNoi")
 *HaNoi*
 
 ## References
