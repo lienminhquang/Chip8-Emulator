@@ -58,12 +58,8 @@ private:
     SDL_Texture* m_Texture;
     FC_Font* m_Font;
 
-    std::unique_ptr<MTexture> m_TestTexture;
-    std::unique_ptr<MTexture> m_TestTexture2;
-    std::unique_ptr<Sprite> m_Sprite;
-
   
-    
+ 
 
     bool m_Quit = false;
     bool m_Pause = false;

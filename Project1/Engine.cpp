@@ -87,14 +87,6 @@ bool Engine::init()
     FC_LoadFont(m_Font, m_Renderer, "res/Roboto-Black.ttf", 12, FC_MakeColor(0x00, 0x00, 0xff, 0xff), TTF_STYLE_NORMAL);
     FC_SetLineSpacing(m_Font, 0);
 
-    m_TestTexture = std::unique_ptr<MTexture>(new MTexture("res/HelloWorld.png", m_Renderer));
-    m_TestTexture2 = std::unique_ptr<MTexture>(new MTexture("res/CloseSelected.png", m_Renderer));
-    m_Sprite = std::unique_ptr<Sprite>(new Sprite(m_TestTexture.get()));
-    m_Sprite->setPosition(100, 100);
-    Sprite* sprite = new Sprite(m_TestTexture2.get());
-    sprite->setPosition(0, 0);
-    m_Sprite->addChild(sprite);
-
     m_Chip.init();
     m_Chip.loadGame(m_Path);
 
@@ -270,8 +262,7 @@ void Engine::display()
     this->displayScreen();
     this->displayDebug();
 
-    m_Sprite->render();
-
+   
     SDL_RenderPresent(m_Renderer);
 }
 
